@@ -33,31 +33,40 @@ export default function About() {
               className="img-zoom relative overflow-hidden"
               style={{ aspectRatio: "3/4" }}
             >
-              {/* Photographer portrait placeholder */}
+              {/* Founder portrait */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://capturex2026.sgp1.cdn.digitaloceanspaces.com/Thumbnail%20.jpg"
+                alt="Founder portrait"
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+              />
+
+              {/* Subtle bottom gradient for label legibility */}
               <div
-                className="absolute inset-0"
+                className="absolute inset-0 pointer-events-none"
                 style={{
                   background:
-                    "radial-gradient(ellipse 80% 80% at 40% 35%, #2a2018 0%, #1a1410 60%, #0f0f0f 100%)",
+                    "linear-gradient(to bottom, transparent 60%, rgba(10,10,10,0.75) 100%)",
                 }}
               />
 
               {/* Subtle gold rim light */}
               <div
-                className="absolute inset-0"
+                className="absolute inset-0 pointer-events-none mix-blend-overlay"
                 style={{
                   background:
-                    "linear-gradient(135deg, transparent 60%, rgba(201,169,110,0.06) 100%)",
+                    "linear-gradient(135deg, transparent 60%, rgba(201,169,110,0.15) 100%)",
                 }}
               />
 
-              {/* Hover prompt */}
-              <div className="absolute bottom-6 left-6 right-6">
+              {/* Founder label */}
+              <div className="absolute bottom-6 left-6 right-6 z-10">
                 <p
-                  className="text-[#8a8a80] text-[10px] tracking-[0.2em] uppercase"
+                  className="text-ivory text-[10px] tracking-[0.2em] uppercase"
                   style={{ fontFamily: "var(--font-inter), sans-serif" }}
                 >
-                  Aryan Kapoor · Founder &amp; Lead Photographer
+                  Founder &amp; Lead Photographer
                 </p>
               </div>
             </div>
