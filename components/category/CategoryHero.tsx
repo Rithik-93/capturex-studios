@@ -1,25 +1,69 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Category } from "@/lib/categories";
 import { asset } from "@/lib/media";
 
 export default function CategoryHero({ category }: { category: Category }) {
   const heroRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
 
-  // Slow parallax on the background
+  const isVideo = category.hero.type === "video";
+  const heroSrc = asset(category.hero.src);
+
+  // rAF-throttled parallax; skip work once hero is off-screen
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
+
+    let lastY = 0;
+    let ticking = false;
+
+    const update = () => {
+      el.style.transform = `translate3d(0, ${lastY * 0.3}px, 0)`;
+      ticking = false;
+    };
+
     const onScroll = () => {
-      const y = window.scrollY;
-      if (y < window.innerHeight * 1.5) {
-        el.style.transform = `translateY(${y * 0.3}px)`;
+      lastY = window.scrollY;
+      if (lastY > window.innerHeight * 1.2) return;
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
       }
     };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Lazy-attach video src at idle so it doesn't block the LCP image/poster
+  useEffect(() => {
+    if (!isVideo) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    const startLoad = () => {
+      if (!video.src) {
+        video.src = heroSrc;
+        video.load();
+        video
+          .play()
+          .then(() => setVideoReady(true))
+          .catch(() => setVideoReady(true));
+      }
+    };
+
+    const idle =
+      (window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number })
+        .requestIdleCallback;
+    if (idle) {
+      idle(startLoad, { timeout: 1500 });
+    } else {
+      setTimeout(startLoad, 250);
+    }
+  }, [isVideo, heroSrc]);
 
   return (
     <section className="relative w-full h-screen overflow-hidden bg-[#0a0a0a]">
@@ -29,22 +73,40 @@ export default function CategoryHero({ category }: { category: Category }) {
         className="absolute inset-0 scale-110"
         style={{ willChange: "transform" }}
       >
-        {category.hero.type === "video" ? (
-          <video
-            className="absolute inset-0 w-full h-full object-cover"
-            src={asset(category.hero.src)}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-          />
+        {isVideo ? (
+          <>
+            {/* Poster fallback while video loads */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={heroSrc.replace(/\.mp4$/i, ".jpg")}
+              alt=""
+              aria-hidden="true"
+              fetchPriority="high"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+                videoReady ? "opacity-0" : "opacity-100"
+              }`}
+              onError={(e) => {
+                // If no poster exists, just hide it — video poster attr will take over
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+            />
+            <video
+              ref={videoRef}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="none"
+            />
+          </>
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             className="absolute inset-0 w-full h-full object-cover"
-            src={asset(category.hero.src)}
+            src={heroSrc}
             alt={category.hero.alt || category.label}
+            fetchPriority="high"
           />
         )}
       </div>

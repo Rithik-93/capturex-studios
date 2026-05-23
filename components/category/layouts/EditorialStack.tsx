@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import MediaFrame from "../MediaFrame";
 import type { MediaItem } from "@/lib/categories";
+import { useReveal } from "@/lib/useReveal";
 
 /**
  * Editorial Stack — full-bleed alternating chapters.
@@ -11,23 +12,7 @@ import type { MediaItem } from "@/lib/categories";
  */
 export default function EditorialStack({ media }: { media: MediaItem[] }) {
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const root = ref.current;
-    if (!root) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            (entry.target as HTMLElement).classList.add("visible");
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    root.querySelectorAll<HTMLElement>(".reveal").forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, [media]);
+  useReveal(ref, [media.length]);
 
   return (
     <section ref={ref} className="bg-void">

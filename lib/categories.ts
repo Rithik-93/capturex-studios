@@ -16,6 +16,8 @@ export type Category = {
   intro: string;
   accent: string;
   hero: MediaItem;
+  /** Lightweight still image used on the homepage grid (always an image, never a video). */
+  gridPreview?: string;
   media: MediaItem[];
   meta: string;
   layout:
@@ -25,6 +27,23 @@ export type Category = {
     | "video-cinema"
     | "product-clean";
 };
+
+/** Returns the best still image to use as a homepage grid thumbnail. */
+export function getGridPreview(cat: Category): { src: string; alt: string } {
+  if (cat.gridPreview) {
+    return { src: cat.gridPreview, alt: cat.label };
+  }
+  if (cat.hero.type === "image") {
+    return { src: cat.hero.src, alt: cat.hero.alt || cat.label };
+  }
+  // Hero is video — find first image in media
+  const firstImage = cat.media.find((m) => m.type === "image");
+  if (firstImage) {
+    return { src: firstImage.src, alt: firstImage.alt || cat.label };
+  }
+  // Last resort: derive a poster from the video URL
+  return { src: cat.hero.src.replace(/\.mp4$/i, ".jpg"), alt: cat.label };
+}
 
 export const CATEGORIES: Category[] = [
   {
@@ -266,6 +285,8 @@ export const CATEGORIES: Category[] = [
       src: "https://capturex2026.sgp1.cdn.digitaloceanspaces.com/products/Diary%20Pen.mp4",
       ratio: "landscape",
     },
+    gridPreview:
+      "https://capturex2026.sgp1.cdn.digitaloceanspaces.com/products/IMG_3121.JPG",
     media: [
       {
         type: "video",
@@ -304,6 +325,8 @@ export const CATEGORIES: Category[] = [
       src: "https://capturex2026.sgp1.cdn.digitaloceanspaces.com/corporate/tech_summit.mp4",
       ratio: "landscape",
     },
+    gridPreview:
+      "https://capturex2026.sgp1.cdn.digitaloceanspaces.com/corporate/corporate.jpg",
     media: [
       {
         type: "video",

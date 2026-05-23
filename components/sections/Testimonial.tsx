@@ -1,27 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useReveal } from "@/lib/useReveal";
 
 export default function Testimonial() {
   const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.querySelectorAll<HTMLElement>(".reveal").forEach((node, i) => {
-            setTimeout(() => node.classList.add("visible"), i * 150);
-          });
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  useReveal(ref);
 
   return (
     <section ref={ref} className="bg-[#1a1a1a] py-32 relative overflow-hidden">

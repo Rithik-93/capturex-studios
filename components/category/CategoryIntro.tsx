@@ -1,28 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import type { Category } from "@/lib/categories";
+import { useReveal } from "@/lib/useReveal";
 
 export default function CategoryIntro({ category }: { category: Category }) {
   const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.querySelectorAll<HTMLElement>(".reveal").forEach((node, i) => {
-            setTimeout(() => node.classList.add("visible"), i * 140);
-          });
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  useReveal(ref);
 
   return (
     <section ref={ref} className="bg-void py-32 md:py-40">
