@@ -1,0 +1,504 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.guide{max-width:680px;padding:0 0 2rem}
+.hero{padding:2.5rem 0 2rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.hero-tag{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:0.75rem}
+.hero-title{font-size:28px;font-weight:500;color:var(--color-text-primary);line-height:1.2;margin-bottom:0.75rem}
+.hero-sub{font-size:15px;color:var(--color-text-secondary);line-height:1.6;max-width:520px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:1.5rem}
+.toc-pill{font-size:12px;padding:5px 14px;border:0.5px solid var(--color-border-secondary);border-radius:20px;color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.toc-pill:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.section{padding:2rem 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.section:last-child{border-bottom:none}
+.section-num{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:0.4rem}
+.section-title{font-size:20px;font-weight:500;color:var(--color-text-primary);margin-bottom:0.3rem}
+.section-desc{font-size:14px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:1.5rem}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem}
+.card-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1.25rem}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.1rem}
+.card-label{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:0.5rem}
+.card-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:0.4rem}
+.card-body{font-size:13px;color:var(--color-text-secondary);line-height:1.55}
+.card-accent{border-left:2px solid}
+.accent-gold{border-color:#c9a96e}
+.accent-teal{border-color:#1D9E75}
+.accent-purple{border-color:#7F77DD}
+.accent-coral{border-color:#D85A30}
+.do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem}
+.do-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
+.do-tag{font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.6rem;display:flex;align-items:center;gap:6px}
+.do-tag.good{color:#0F6E56}
+.do-tag.bad{color:#A32D2D}
+.do-tag i{font-size:14px}
+.do-item{font-size:13px;color:var(--color-text-secondary);line-height:1.55;margin-bottom:0.3rem;padding-left:1rem;position:relative}
+.do-item::before{content:'';position:absolute;left:0;top:7px;width:4px;height:4px;border-radius:50%;background:var(--color-border-secondary)}
+.palette-row{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.swatch{flex:1;min-width:70px;border-radius:8px;overflow:hidden}
+.swatch-color{height:48px}
+.swatch-info{padding:6px 8px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-top:none;border-radius:0 0 8px 8px}
+.swatch-name{font-size:11px;font-weight:500;color:var(--color-text-primary)}
+.swatch-hex{font-size:10px;color:var(--color-text-tertiary)}
+.swatch-use{font-size:10px;color:var(--color-text-secondary);margin-top:2px}
+.font-demo{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:12px}
+.font-pair-label{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-tertiary);margin-bottom:0.75rem}
+.font-heading{font-size:22px;font-weight:400;color:var(--color-text-primary);line-height:1.2;margin-bottom:0.25rem}
+.font-sub{font-size:13px;color:var(--color-text-secondary);letter-spacing:0.03em}
+.flow-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.75rem 1rem;margin-bottom:8px}
+.flow-num{font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:0.2rem}
+.flow-name{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:0.2rem}
+.flow-desc{font-size:12px;color:var(--color-text-secondary)}
+.arrow-down{text-align:center;color:var(--color-text-tertiary);font-size:18px;margin:2px 0;line-height:1}
+.gallery-type{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem}
+.gallery-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.gallery-preview{height:80px;display:flex;gap:2px;padding:10px;background:var(--color-background-secondary)}
+.gallery-block{background:var(--color-border-secondary);border-radius:3px}
+.gallery-info{padding:0.75rem 1rem}
+.gallery-name{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:0.25rem}
+.gallery-use{font-size:12px;color:var(--color-text-secondary)}
+.badge{display:inline-block;font-size:10px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:3px 8px;border-radius:4px;margin-bottom:8px}
+.badge-gold{background:#fef3e2;color:#8a6010}
+.badge-teal{background:#E1F5EE;color:#0F6E56}
+.badge-purple{background:#EEEDFE;color:#3C3489}
+.badge-coral{background:#FAECE7;color:#993C1D}
+.insight-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:1rem}
+.insight-icon{width:32px;height:32px;border-radius:8px;background:var(--color-background-secondary);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.insight-content{flex:1}
+.insight-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:0.2rem}
+.insight-body{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.law-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
+.law-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:0.85rem 1rem}
+.law-name{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:0.25rem}
+.law-body{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.law-apply{font-size:11px;color:var(--color-text-tertiary);margin-top:0.35rem;font-style:italic}
+.cta-box{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:0.5rem}
+.cta-text{font-size:13px;color:var(--color-text-secondary);line-height:1.5}
+.cta-btn{flex-shrink:0;font-size:12px;font-weight:500;padding:8px 16px;border:0.5px solid var(--color-border-primary);border-radius:6px;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;transition:all .15s;white-space:nowrap}
+.cta-btn:hover{background:var(--color-background-secondary)}
+.section-divider{height:0.5px;background:var(--color-border-tertiary);margin:0.5rem 0 1.5rem}
+.highlight-stat{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem}
+.stat-pill{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.6rem 1rem;flex:1;min-width:120px}
+.stat-num{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.stat-label{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.full-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.1rem 1.25rem;margin-bottom:12px}
+.tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0.75rem}
+.tag{font-size:11px;padding:3px 10px;border:0.5px solid var(--color-border-secondary);border-radius:20px;color:var(--color-text-secondary)}
+.scroll-reveal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
+.sr-step{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:0.85rem;text-align:center}
+.sr-icon{font-size:20px;margin-bottom:0.4rem;color:var(--color-text-secondary)}
+.sr-label{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:0.2rem}
+.sr-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.45}
+</style>
+
+<div class="guide">
+
+<div class="hero">
+  <div class="hero-tag">Design Intelligence Report — Photography &amp; Videography</div>
+  <div class="hero-title">How to make your portfolio website feel luxurious, magnetic, and impossible to leave</div>
+  <div class="hero-sub">Research-backed design language, human psychology principles, and portfolio presentation strategies — all tailored to your multi-discipline studio.</div>
+  <div class="toc">
+    <div class="toc-pill">01 — The Luxury Design Language</div>
+    <div class="toc-pill">02 — Color &amp; Typography</div>
+    <div class="toc-pill">03 — Portfolio Display Strategy</div>
+    <div class="toc-pill">04 — Human Psychology &amp; Navigation</div>
+    <div class="toc-pill">05 — Section-by-Section Blueprint</div>
+    <div class="toc-pill">06 — Conversion Psychology</div>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+  <div class="section-num">01</div>
+  <div class="section-title">The Luxury Design Language</div>
+  <div class="section-desc">What separates a "nice" portfolio from one that feels expensive. These are the foundational principles every high-end creative brand uses.</div>
+
+  <div class="highlight-stat">
+    <div class="stat-pill"><div class="stat-num">3s</div><div class="stat-label">Window to capture attention before bounce</div></div>
+    <div class="stat-pill"><div class="stat-num">20%</div><div class="stat-label">Better comprehension with generous whitespace</div></div>
+    <div class="stat-pill"><div class="stat-num">94%</div><div class="stat-label">First impressions driven by design alone</div></div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card card-accent accent-gold">
+      <div class="badge badge-gold">Core Principle</div>
+      <div class="card-title">Restraint is the ultimate luxury</div>
+      <div class="card-body">The quieter you are, the louder your work speaks. Dior, Rolex, and Apple don't shout — they create atmosphere. Every element on screen competes with your photography for attention. Remove everything that doesn't earn its place.</div>
+    </div>
+    <div class="card card-accent accent-gold">
+      <div class="badge badge-gold">Core Principle</div>
+      <div class="card-title">Negative space as a design element</div>
+      <div class="card-body">Luxury brands treat empty space the way galleries treat wall space between masterpieces — it's not emptiness, it's reverence. Generous margins and breathing room tell visitors: this work is precious. Crowded = cheap. Spacious = expensive.</div>
+    </div>
+    <div class="card card-accent accent-teal">
+      <div class="badge badge-teal">Visual Strategy</div>
+      <div class="card-title">Dark mode as your canvas</div>
+      <div class="card-body">A dark-themed site (deep #1a1a1a, not pure black) is the ideal canvas for photography. Images "emerge from the shadow" — colors pop with dramatically higher perceived contrast. Cartier, Rolls-Royce, and high-end studios all use this. Your photos will look 30% more vivid instantly.</div>
+    </div>
+    <div class="card card-accent accent-teal">
+      <div class="badge badge-teal">Visual Strategy</div>
+      <div class="card-title">Cinematic pacing over information dump</div>
+      <div class="card-body">Luxury websites reveal content deliberately — like a film, not a brochure. Use scroll-triggered reveals, fade-ins, and section breaks to let visitors savor each moment. Never show everything at once. The journey of discovery is part of the experience.</div>
+    </div>
+  </div>
+
+  <div class="do-dont">
+    <div class="do-box">
+      <div class="do-tag good"><i class="ti ti-check" aria-hidden="true"></i> Do this</div>
+      <div class="do-item">One hero image that fills the entire screen</div>
+      <div class="do-item">Thin, elegant navigation — 4 items max</div>
+      <div class="do-item">Large, slow-loading typography with kerning</div>
+      <div class="do-item">Curated gallery of only your best 6–10 shots per category</div>
+      <div class="do-item">Hover states with subtle fade or zoom</div>
+      <div class="do-item">Consistent color palette throughout</div>
+    </div>
+    <div class="do-box">
+      <div class="do-tag bad"><i class="ti ti-x" aria-hidden="true"></i> Avoid this</div>
+      <div class="do-item">Carousels that auto-rotate (1% click rate)</div>
+      <div class="do-item">5+ items in the navigation menu</div>
+      <div class="do-item">Watermarks on hero images</div>
+      <div class="do-item">Showing 50+ photos in one gallery</div>
+      <div class="do-item">Multiple competing CTAs on one page</div>
+      <div class="do-item">Generic stock-style overlays or filters</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+  <div class="section-num">02</div>
+  <div class="section-title">Color System &amp; Typography</div>
+  <div class="section-desc">The fonts and colors you choose communicate your brand before anyone reads a single word. For a luxury photography brand, this has to be immaculate.</div>
+
+  <div class="font-demo">
+    <div class="font-pair-label">Recommended Pairing A — Timeless Elegance</div>
+    <div class="font-heading" style="font-family:'Georgia',serif;font-style:italic">Moments Captured in Light</div>
+    <div class="font-sub" style="letter-spacing:0.15em;text-transform:uppercase;font-size:12px;color:var(--color-text-tertiary)">Heading: Cormorant Garamond Italic &nbsp;·&nbsp; Body: Jost or DM Sans</div>
+  </div>
+
+  <div class="font-demo">
+    <div class="font-pair-label">Recommended Pairing B — Modern Luxury</div>
+    <div class="font-heading" style="font-family:'Palatino','Book Antiqua',serif;font-weight:400;letter-spacing:-0.01em">Stories Worth Remembering</div>
+    <div class="font-sub" style="letter-spacing:0.12em;text-transform:uppercase;font-size:12px;color:var(--color-text-tertiary)">Heading: Playfair Display &nbsp;·&nbsp; Body: Inter or Lato</div>
+  </div>
+
+  <div style="margin-bottom:1.25rem">
+    <div class="card-label" style="margin-bottom:0.75rem">Typography Rules for Luxury</div>
+    <div class="card-grid-3">
+      <div class="card">
+        <div class="card-title">Serif heading, sans body</div>
+        <div class="card-body">Classic serif for display text conveys heritage and craftsmanship. Clean sans-serif for body ensures readability. This is the Vogue/Dior formula.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Generous line spacing</div>
+        <div class="card-body">Set body line-height to 1.7–1.9. Headlines at 1.0–1.15. Space between elements should feel breathable, never rushed.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Tracked uppercase labels</div>
+        <div class="card-body">Small category labels in uppercase with 0.12–0.18em letter-spacing signal premium positioning. Think: "FASHION · EDITORIAL · PORTRAIT"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-label" style="margin-bottom:0.75rem">Luxury Color Palette Options</div>
+  <div class="palette-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1a1a1a"></div>
+      <div class="swatch-info"><div class="swatch-name">Void</div><div class="swatch-hex">#1a1a1a</div><div class="swatch-use">Primary background</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2d2d2d"></div>
+      <div class="swatch-info"><div class="swatch-name">Shadow</div><div class="swatch-hex">#2d2d2d</div><div class="swatch-use">Card surfaces</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#c9a96e"></div>
+      <div class="swatch-info"><div class="swatch-name">Gold</div><div class="swatch-hex">#c9a96e</div><div class="swatch-use">Accent &amp; hover</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#f0ece4"></div>
+      <div class="swatch-info"><div class="swatch-name">Ivory</div><div class="swatch-hex">#f0ece4</div><div class="swatch-use">Primary text</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#8a8a80"></div>
+      <div class="swatch-info"><div class="swatch-name">Mist</div><div class="swatch-hex">#8a8a80</div><div class="swatch-use">Secondary text</div></div>
+    </div>
+  </div>
+
+  <div class="palette-row">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#f5f0eb"></div>
+      <div class="swatch-info"><div class="swatch-name">Linen</div><div class="swatch-hex">#f5f0eb</div><div class="swatch-use">Light mode bg</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2c3e35"></div>
+      <div class="swatch-info"><div class="swatch-name">Forest</div><div class="swatch-hex">#2c3e35</div><div class="swatch-use">Alt dark bg</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#b8a89a"></div>
+      <div class="swatch-info"><div class="swatch-name">Rosewood</div><div class="swatch-hex">#b8a89a</div><div class="swatch-use">Warm accent</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#e8e0d4"></div>
+      <div class="swatch-info"><div class="swatch-name">Parchment</div><div class="swatch-hex">#e8e0d4</div><div class="swatch-use">Warm subtext</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#3d3a4a"></div>
+      <div class="swatch-info"><div class="swatch-name">Midnight</div><div class="swatch-hex">#3d3a4a</div><div class="swatch-use">Moody alt bg</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+  <div class="section-num">03</div>
+  <div class="section-title">Portfolio Display Strategy</div>
+  <div class="section-desc">How you present your work is just as important as the work itself. Use different gallery formats strategically across your service categories.</div>
+
+  <div class="gallery-type">
+    <div class="gallery-card">
+      <div class="gallery-preview">
+        <div class="gallery-block" style="flex:2;height:100%"></div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+          <div class="gallery-block" style="flex:1"></div>
+          <div class="gallery-block" style="flex:1"></div>
+        </div>
+      </div>
+      <div class="gallery-info">
+        <div class="gallery-name">Masonry / Mixed Grid</div>
+        <div class="gallery-use">Best for: Pre-wedding, Events, Sports, Fashion — categories with emotionally varied shots where the diversity itself tells a story.</div>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <div class="gallery-preview" style="flex-direction:column;align-items:center;justify-content:center">
+        <div class="gallery-block" style="width:100%;height:70%"></div>
+      </div>
+      <div class="gallery-info">
+        <div class="gallery-name">Full-bleed Horizontal Scroll</div>
+        <div class="gallery-use">Best for: Pre-wedding, Corporate Video, Fashion — cinematic feel, story-driven. Forces visitors to experience the work like a reel.</div>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <div class="gallery-preview" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;padding:10px">
+        <div class="gallery-block" style="height:56px"></div>
+        <div class="gallery-block" style="height:56px"></div>
+        <div class="gallery-block" style="height:56px"></div>
+        <div class="gallery-block" style="height:56px"></div>
+        <div class="gallery-block" style="height:56px"></div>
+        <div class="gallery-block" style="height:56px"></div>
+      </div>
+      <div class="gallery-info">
+        <div class="gallery-name">Uniform Grid</div>
+        <div class="gallery-use">Best for: Product, Food, Corporate Headshots — categories where consistency and quality matter more than narrative flow.</div>
+      </div>
+    </div>
+    <div class="gallery-card">
+      <div class="gallery-preview" style="align-items:center;justify-content:center">
+        <div class="gallery-block" style="width:60%;height:85%"></div>
+      </div>
+      <div class="gallery-info">
+        <div class="gallery-name">Spotlight / Single Hero</div>
+        <div class="gallery-use">Best for: Birthdays, Portraits, Video reels — one powerful image leads, with a grid below. The hero does emotional heavy lifting.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="full-card">
+    <div class="card-label" style="margin-bottom:0.6rem">The Curation Rule — Less is Infinitely More</div>
+    <div class="card-body" style="font-size:13px;color:var(--color-text-secondary);line-height:1.6">
+      Never show more than <strong style="color:var(--color-text-primary)">8–12 images per category</strong> on the initial gallery page. Your strongest 8 images beat your top 40 every time — because visitors make a decision in the first 3 photos and leave if overwhelmed. What's not shown is as important as what is. Think Hermès display case, not Amazon product listing.
+    </div>
+  </div>
+
+  <div class="full-card">
+    <div class="card-label" style="margin-bottom:0.6rem">Category-as-Story: Structure your portfolio like a film</div>
+    <div class="tag-row">
+      <span class="tag">Pre-wedding</span><span class="tag">Birthdays</span><span class="tag">Fashion</span><span class="tag">Product</span><span class="tag">Food</span><span class="tag">Events</span><span class="tag">Sports</span><span class="tag">Corporate Video</span>
+    </div>
+    <div class="card-body" style="font-size:13px;color:var(--color-text-secondary);line-height:1.6">
+      Each category page should open with a full-width hero, followed by a 2–3 sentence story ("Every pre-wedding shoot is a conversation between two people who've decided to build a life together..."). Then your gallery. Then a single CTA. This narrative structure increases time-on-page by giving visitors emotional context before they see the work.
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card card-accent accent-purple">
+      <div class="badge badge-purple">Video</div>
+      <div class="card-title">Showreel placement strategy</div>
+      <div class="card-body">Place your corporate/pre-wedding video reel autoplay (muted, loop) as the homepage hero OR within the specific category page. Never both. Autoplay video with no sound is cinematic; with sound it's invasive.</div>
+    </div>
+    <div class="card card-accent accent-coral">
+      <div class="badge badge-coral">Hover UX</div>
+      <div class="card-title">Micro-interactions on gallery items</div>
+      <div class="card-body">On hover: subtle zoom (1.03–1.05x max), a brief fade overlay revealing the project type, or a parallax shift. These signal interactivity without being distracting. Avoid: heavy animations, text blocks appearing on hover.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+  <div class="section-num">04</div>
+  <div class="section-title">Human Psychology &amp; Navigation Design</div>
+  <div class="section-desc">Every design decision either works with human cognition or against it. Here's the science applied directly to your portfolio.</div>
+
+  <div class="law-grid">
+    <div class="law-card">
+      <div class="law-name">Hick's Law</div>
+      <div class="law-body">More choices = longer decisions = higher abandonment. Keep navigation to 4 items maximum.</div>
+      <div class="law-apply">→ Use: Home · Work · About · Contact. Hide sub-categories behind Work.</div>
+    </div>
+    <div class="law-card">
+      <div class="law-name">The Peak-End Rule</div>
+      <div class="law-body">People judge an experience by its peak moment and its ending — not the average. Make your best work the peak and end with a powerful CTA.</div>
+      <div class="law-apply">→ Place your absolute best photo in position 3 (after the eye has warmed up).</div>
+    </div>
+    <div class="law-card">
+      <div class="law-name">The Zeigarnik Effect</div>
+      <div class="law-body">People remember incomplete tasks more than complete ones. Hint at more content to keep scrolling.</div>
+      <div class="law-apply">→ Show half of the next gallery section peeking above the fold.</div>
+    </div>
+    <div class="law-card">
+      <div class="law-name">Social Proof (Cialdini)</div>
+      <div class="law-body">Visitors trust the judgment of others before forming their own. Credibility markers reduce hesitation.</div>
+      <div class="law-apply">→ One powerful quote from a real client near the top, not a testimonials section at the bottom.</div>
+    </div>
+    <div class="law-card">
+      <div class="law-name">Visual Hierarchy</div>
+      <div class="law-body">The eye moves in F-pattern or Z-pattern on pages. Place your most important content along these paths.</div>
+      <div class="law-apply">→ Logo top-left, hero statement center-top, CTA top-right or large center.</div>
+    </div>
+    <div class="law-card">
+      <div class="law-name">Mere Exposure Effect</div>
+      <div class="law-body">People develop preference for things they've seen repeatedly. Your consistent visual brand across all pages builds familiarity = trust.</div>
+      <div class="law-apply">→ Same font pair, same spacing system, same color accent throughout every page.</div>
+    </div>
+  </div>
+
+  <div class="card-label" style="margin-bottom:0.75rem">Scroll-Triggered Engagement Architecture</div>
+  <div class="scroll-reveal">
+    <div class="sr-step">
+      <div class="sr-icon"><i class="ti ti-eye" aria-hidden="true"></i></div>
+      <div class="sr-label">Instant Wow</div>
+      <div class="sr-desc">Full-screen image or muted video. Your very best work. No text. Pure visual punch. 0–3 seconds.</div>
+    </div>
+    <div class="sr-step">
+      <div class="sr-icon"><i class="ti ti-heart" aria-hidden="true"></i></div>
+      <div class="sr-label">Emotional Hook</div>
+      <div class="sr-desc">A single sentence that describes your approach. Elegant. Personal. Not a list of services.</div>
+    </div>
+    <div class="sr-step">
+      <div class="sr-icon"><i class="ti ti-layout-grid" aria-hidden="true"></i></div>
+      <div class="sr-label">Portfolio Tease</div>
+      <div class="sr-desc">3–4 category thumbnails that invite deeper exploration. Not a full gallery yet.</div>
+    </div>
+    <div class="sr-step">
+      <div class="sr-icon"><i class="ti ti-quote" aria-hidden="true"></i></div>
+      <div class="sr-label">Social Proof</div>
+      <div class="sr-desc">One powerful client quote in large type. Name and occasion below in small text.</div>
+    </div>
+    <div class="sr-step">
+      <div class="sr-icon"><i class="ti ti-user" aria-hidden="true"></i></div>
+      <div class="sr-label">Human Moment</div>
+      <div class="sr-desc">A brief story of who you are and why you shoot. People book people, not services.</div>
+    </div>
+    <div class="sr-step">
+      <div class="sr-icon"><i class="ti ti-mail" aria-hidden="true"></i></div>
+      <div class="sr-label">Frictionless CTA</div>
+      <div class="sr-desc">"Let's create something together" — one line, one button. Not a long contact form.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+  <div class="section-num">05</div>
+  <div class="section-title">Section-by-Section Blueprint</div>
+  <div class="section-desc">Every page section on your site has a specific job to do. Here's exactly what each should communicate and how.</div>
+
+  <div class="flow-box">
+    <div class="flow-num">Hero — First impression, 0–3 seconds</div>
+    <div class="flow-name">Full-bleed image or muted video reel</div>
+    <div class="flow-desc">No tagline. No menu clutter. Just your work. Optionally: your logo top-center in thin white text. Let the image breathe for 2–3 seconds before any fade-in text appears. If you use a tagline, keep it under 5 words in a large, thin serif.</div>
+  </div>
+  <div class="arrow-down">↓</div>
+  <div class="flow-box">
+    <div class="flow-num">Positioning Statement — 3–8 seconds</div>
+    <div class="flow-name">One sentence. Emotional, not functional.</div>
+    <div class="flow-desc">"I photograph the moments between moments." Not "We offer wedding, birthday, and corporate photography in Hyderabad." The first creates desire. The second creates a quote request. You want desire first.</div>
+  </div>
+  <div class="arrow-down">↓</div>
+  <div class="flow-box">
+    <div class="flow-num">Category Preview Grid — Discovery phase</div>
+    <div class="flow-name">4–6 category cards, each with one hero shot</div>
+    <div class="flow-desc">Label: Pre-wedding · Birthday · Fashion · Product · Food · Corporate. Each card: a stunning image, category name on hover in thin white text, links to the full category gallery. Do not list pricing or details here.</div>
+  </div>
+  <div class="arrow-down">↓</div>
+  <div class="flow-box">
+    <div class="flow-num">Featured Work — The peak moment</div>
+    <div class="flow-name">2–3 full-width featured project showcases</div>
+    <div class="flow-desc">Pick your most visually spectacular projects — one pre-wedding story, one fashion/product shoot, one corporate video still. Large image, small story caption, no pricing. This is where someone falls in love with your work.</div>
+  </div>
+  <div class="arrow-down">↓</div>
+  <div class="flow-box">
+    <div class="flow-num">Testimonial — Trust building</div>
+    <div class="flow-name">One quote, displayed large. Not a carousel.</div>
+    <div class="flow-desc">"They didn't just photograph our wedding — they made us see our love the way we feel it." — Priya &amp; Arjun, December 2024. The name and occasion below in small caps. Credibility through specificity.</div>
+  </div>
+  <div class="arrow-down">↓</div>
+  <div class="flow-box">
+    <div class="flow-num">About — The human connection</div>
+    <div class="flow-name">Your face + 3 sentences maximum</div>
+    <div class="flow-desc">A candid, well-lit photo of you working or looking natural. A short, personal story about why you shoot. People book people. This section converts browsers into inquiries more than any other. Don't hide it in the footer.</div>
+  </div>
+  <div class="arrow-down">↓</div>
+  <div class="flow-box">
+    <div class="flow-num">Contact CTA — The ending that stays</div>
+    <div class="flow-name">Elegant, low-friction inquiry invitation</div>
+    <div class="flow-desc">"Ready to create something unforgettable?" with a single "Get in touch" button. No pricing on the homepage. No overwhelming form. Just an invitation. The goal is the inquiry — details come in the conversation.</div>
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+  <div class="section-num">06</div>
+  <div class="section-title">Conversion Psychology &amp; Final Details</div>
+  <div class="section-desc">The difference between a beautiful site that gets no bookings and one that consistently converts comes down to these details.</div>
+
+  <div class="card-grid">
+    <div class="card card-accent accent-gold">
+      <div class="card-title">The micro-commitment principle</div>
+      <div class="card-body">Start with tiny asks — "View our work" before "Book a session." Once a visitor has clicked once, they're 2–3x more likely to complete an inquiry. Never lead with "Book Now" on the first scroll.</div>
+    </div>
+    <div class="card card-accent accent-gold">
+      <div class="card-title">Exclusivity framing</div>
+      <div class="card-body">"Available for select bookings in 2025" carries more weight than "Book anytime." Scarcity is psychologically powerful. Luxury brands never seem desperate for business — they seem selective about clientele.</div>
+    </div>
+    <div class="card card-accent accent-teal">
+      <div class="card-title">Mobile-first gallery experience</div>
+      <div class="card-body">60%+ of portfolio visitors are on phones. Vertical scroll galleries, thumb-friendly navigation, images optimized for portrait screens. Your mobile site must be as luxurious as desktop — often more so.</div>
+    </div>
+    <div class="card card-accent accent-teal">
+      <div class="card-title">Speed as a luxury signal</div>
+      <div class="card-body">A slow-loading site destroys the premium perception instantly. Use WebP format, lazy loading, and a CDN. Aim for under 2 seconds on mobile. A luxury hotel's website loads fast — so should yours.</div>
+    </div>
+    <div class="card card-accent accent-purple">
+      <div class="card-title">No generic "Contact Us" language</div>
+      <div class="card-body">Replace transactional language with emotional language. "Let's create something beautiful" instead of "Submit inquiry." "Tell me about your vision" instead of "Fill out the form below." Tone matters enormously.</div>
+    </div>
+    <div class="card card-accent accent-coral">
+      <div class="card-title">Press &amp; recognition section</div>
+      <div class="card-body">If you've been featured anywhere — local publications, wedding blogs, Instagram features — display the logos or quotes. High-end photographers often feature Harper's Bazaar or Vogue quotes at the very top of the page.</div>
+    </div>
+  </div>
+
+  <div class="full-card" style="border-left:2px solid #c9a96e">
+    <div class="card-label" style="color:#8a6010;margin-bottom:0.5rem">The Golden Rule of Luxury Portfolio Sites</div>
+    <div style="font-size:15px;color:var(--color-text-primary);line-height:1.6;font-style:italic">"The experience of browsing your website should feel like the experience of receiving your photography — considered, beautiful, and impossible to rush through."</div>
+    <div style="font-size:12px;color:var(--color-text-tertiary);margin-top:0.5rem">Every scroll, every transition, every hover state is either reinforcing your quality promise or quietly undermining it.</div>
+  </div>
+
+  <div class="cta-box">
+    <div class="cta-text">Want me to analyze your current website's specific pages and suggest targeted improvements — or build a visual mockup of any section?</div>
+    <button class="cta-btn" onclick="sendPrompt('Can you build a visual mockup of how my homepage hero section should look for a luxury photography website?')">Build a mockup ↗</button>
+  </div>
+</div>
+
+</div>
