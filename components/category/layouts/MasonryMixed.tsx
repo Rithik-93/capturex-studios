@@ -1,9 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import MediaFrame from "../MediaFrame";
 import type { MediaItem } from "@/lib/categories";
-import { useReveal } from "@/lib/useReveal";
 
 /**
  * Masonry Mixed — undulating editorial rhythm.
@@ -22,7 +21,23 @@ import { useReveal } from "@/lib/useReveal";
  */
 export default function MasonryMixed({ media }: { media: MediaItem[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  useReveal(ref, [media.length]);
+
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    root.querySelectorAll<HTMLElement>(".reveal").forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, [media]);
 
   // Build editorial blocks adaptively from media count
   const blocks = buildBlocks(media);

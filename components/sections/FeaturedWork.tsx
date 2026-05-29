@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { useReveal } from "@/lib/useReveal";
+import { useEffect, useRef } from "react";
 
 const PROJECTS = [
   {
@@ -36,6 +35,24 @@ const PROJECTS = [
   },
 ];
 
+function useReveal(ref: React.RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("visible");
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.12 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [ref]);
+}
+
 function ProjectRow({
   project,
   index,
@@ -44,7 +61,7 @@ function ProjectRow({
   index: number;
 }) {
   const rowRef = useRef<HTMLDivElement>(null);
-  useReveal(rowRef);
+  useReveal(rowRef as React.RefObject<HTMLElement>);
 
   const isEven = index % 2 === 0;
 
@@ -135,7 +152,7 @@ function ProjectRow({
 
 export default function FeaturedWork() {
   const headingRef = useRef<HTMLDivElement>(null);
-  useReveal(headingRef);
+  useReveal(headingRef as React.RefObject<HTMLElement>);
 
   return (
     <section id="work" className="bg-[#1a1a1a]">

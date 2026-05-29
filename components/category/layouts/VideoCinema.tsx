@@ -1,9 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import MediaFrame from "../MediaFrame";
 import type { MediaItem } from "@/lib/categories";
-import { useReveal } from "@/lib/useReveal";
 
 /**
  * VideoCinema — full-bleed letterboxed films, vertical stack.
@@ -12,7 +11,23 @@ import { useReveal } from "@/lib/useReveal";
  */
 export default function VideoCinema({ media }: { media: MediaItem[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  useReveal(ref, [media.length]);
+
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    root.querySelectorAll<HTMLElement>(".reveal").forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, [media]);
 
   return (
     <section ref={ref} className="bg-[#0a0a0a]">

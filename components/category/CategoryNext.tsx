@@ -1,15 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
-import { type Category, getGridPreview } from "@/lib/categories";
+import { useEffect, useRef } from "react";
+import type { Category } from "@/lib/categories";
 import { asset } from "@/lib/media";
-import { useReveal } from "@/lib/useReveal";
 
 export default function CategoryNext({ next }: { next: Category }) {
   const ref = useRef<HTMLAnchorElement>(null);
-  useReveal(ref);
-  const preview = getGridPreview(next);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("visible");
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <section className="bg-void">
@@ -18,15 +31,26 @@ export default function CategoryNext({ next }: { next: Category }) {
         href={`/work/${next.slug}`}
         className="reveal block relative h-[70vh] md:h-[80vh] overflow-hidden group no-underline"
       >
-        {/* Background — still preview only (no autoplay video here) */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={asset(preview.src)}
-          alt={preview.alt}
-          className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-all duration-1000 scale-105 group-hover:scale-100"
-          loading="lazy"
-          decoding="async"
-        />
+        {/* Background media */}
+        {next.hero.type === "video" ? (
+          <video
+            className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-[1500ms] scale-105 group-hover:scale-100"
+            src={asset(next.hero.src)}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={asset(next.hero.src)}
+            alt={next.hero.alt || next.label}
+            className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-all duration-1200 scale-105 group-hover:scale-100"
+            loading="lazy"
+          />
+        )}
 
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-void/50 group-hover:bg-void/30 transition-colors duration-[1200ms]" />

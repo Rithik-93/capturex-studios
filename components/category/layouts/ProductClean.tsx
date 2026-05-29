@@ -1,9 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import MediaFrame from "../MediaFrame";
 import type { MediaItem } from "@/lib/categories";
-import { useReveal } from "@/lib/useReveal";
 
 /**
  * ProductClean — controlled grid on darker canvas.
@@ -13,7 +12,23 @@ import { useReveal } from "@/lib/useReveal";
  */
 export default function ProductClean({ media }: { media: MediaItem[] }) {
   const ref = useRef<HTMLDivElement>(null);
-  useReveal(ref, [media.length]);
+
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    root.querySelectorAll<HTMLElement>(".reveal").forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, [media]);
 
   const videos = media.filter((m) => m.type === "video");
   const images = media.filter((m) => m.type === "image");

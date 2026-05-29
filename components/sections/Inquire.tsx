@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useReveal } from "@/lib/useReveal";
+import { useEffect, useRef, useState } from "react";
 
 const PROJECT_TYPES = [
   "Wedding & Pre-Wedding",
@@ -25,7 +24,24 @@ const BUDGET_RANGES = [
 export default function Inquire() {
   const ref = useRef<HTMLElement>(null);
   const [submitted, setSubmitted] = useState(false);
-  useReveal(ref);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.querySelectorAll<HTMLElement>(".reveal").forEach((node, i) => {
+            setTimeout(() => node.classList.add("visible"), i * 100);
+          });
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
